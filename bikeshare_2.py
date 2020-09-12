@@ -155,7 +155,25 @@ def user_stats(df,city):
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
 
-
+def print_raw_data(df):
+    """Prompts user if they want to view 5 lines of raw data. Keeps prompting until user inputs 'no' or end of data is reached."""
+    n = 0
+    while True:
+        x = input('Do you want to see 5 lines of raw data (yes/no)').lower().strip()
+        if (x == 'yes' or x == 'y'):
+            #checks if there exists 5 more values in dataframe
+            if len(df.index) > (n + 5 - 1):
+                print(df.iloc[n:n+5,:])
+                n += 5
+            else:
+                print(df.iloc[n:,:])
+                print('You have reached the end of the data')
+                break
+        elif x == 'no' or x == 'n':
+            break
+        else:
+            print('Invalid input, please reply with yes/no or y/n')
+	
 def main():
     while True:
         city, month, day = get_filters()
@@ -165,7 +183,8 @@ def main():
         station_stats(df)
         trip_duration_stats(df)
         user_stats(df,city)
-
+        print_raw_data(df)
+	
         restart = input('\nWould you like to restart? Enter yes or no.\n')
         if restart.lower() != 'yes':
             break
